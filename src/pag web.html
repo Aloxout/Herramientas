@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AmantesDelBalón - Todo sobre el fútbol que amas. Noticias, fotos y más.">
+    <title>AmantesDelBalón</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: linear-gradient(45deg, #28a745, #1e7e34);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        header .logo-container {
+            display: flex;
+            align-items: center;	
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        header img {
+            width: 60px;
+            height: 60px;
+            margin-left: 10px;
+        }
+        header p {
+            margin: 0;
+            font-size: 16px;
+        }
+        nav {
+            background-color: #218838;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        section {
+            margin-bottom: 100px;
+        }
+		#noticias {
+            margin-bottom: 100px;
+        }
+
+        #galeria {
+            margin-bottom: 100px;
+        }
+
+        #ligas {
+            margin-bottom: 100px;
+        }
+		
+		#contacto {
+            margin-bottom: 20px;
+        }
+		
+        .news-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: calc(33.333% - 20px);
+        }
+        .news-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .news-card h3 {
+            margin: 10px;
+            font-size: 18px;
+        }
+        .news-card p {
+            margin: 10px;
+            color: #555;
+            font-size: 14px;
+        }
+        .news-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .gallery {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scroll-behavior: smooth;
+        }
+        .gallery img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+		
+		.modal {
+            display: none; /* Modal hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Dark background with opacity */
+            overflow: auto;
+            padding-top: 0; /* Adjust the space upwards */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            display: flex;
+            position: relative;
+            background-color: #fefefe;
+            margin: 0 auto;
+            padding: 0;
+            width: 80%;
+            height: 80%;
+        }
+
+        .modal-content img {
+            height: 100%; /* Image fills the height of the modal */
+            width: auto;
+            margin-right: 20px;
+            object-fit: contain;
+        }
+
+        .modal-content div {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        #modal-info h3 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        #modal-info p {
+            font-size: 16px;
+        }
+		
+		#ligas {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(to bottom, #ffffff, #f4f4f4);
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #ligas h2 {
+            font-size: 28px;
+            color: #000000;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }  
+
+        .leagues-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .league-card {
+            width: 220px;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .league-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+            transition: transform 0.3s ease;
+        }
+
+        .league-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+         }
+
+         .league-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+         }
+
+         .league-card:hover img {
+            transform: scale(1.2);
+         }
+
+         .league-card:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(40, 167, 69, 0.5), rgba(0, 0, 0, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+         }
+
+         .league-card:hover:after {
+            opacity: 1;
+		 }
+
+
+#contacto {
+    margin-bottom: 40px;
+    background-color: #f8f8f8;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#contacto h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#contacto .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+#contacto .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#contacto .contact-item p {
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+#contacto .contact-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contact-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.submit-btn {
+    padding: 12px 20px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+
+		
+        footer {
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        footer img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <h1>AmantesDelBalón</h1>
+            <img src="imagenes/balon.png" alt="Balón">
+        </div>
+        <p>Tu pasión por el fútbol en un solo lugar</p>
+    </header>
+    <nav>
+        <a href="#noticias">Noticias</a>
+        <a href="#galeria">Galería</a>
+        <a href="#ligas">Ligas</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="container">
+        <!-- Noticias -->
+        <section id="noticias">
+            <h2>Últimas Noticias</h2>
+            <div class="news-container">
+                <div class="news-card" onclick="location.href='noticia1.html';">
+                    <img src="imagenes/not1.jpeg" alt="Botafogo vs Real Madrid">
+                    <h3>Botafogo, posible rival del Real Madrid</h3>
+                    <p>El equipo brasileño se medirá a los merengues en la final de la Intercontinental...</p>
+                </div>
+                <div class="news-card" onclick="location.href='noticia2.html';">
+            <img src="imagenes/madrid.jpeg" alt="Real Madrid">
+            <h3>Real Madrid</h3>
+            <p>Al Madrid se le abren las puertas del liderato. La inesperada derrota del Barcelona contra Las Palmas permite al Madrid ponerse en cabeza si gana los dos partidos que tiene pendientes ante Getafe y Valencia...</p>
+        </div>
+        <div class="news-card" onclick="location.href='noticia3.html';">
+                    <img src="imagenes/carlo.jpeg" alt="LALIGA EA SPORTS">
+                    <h3>Rueda de prensa de Ancelotti, en directo | Última hora sobre el Real Madrid</h3>
+                    <p>Sigue, en vivo, el minuto a minuto la comparecencia del entrenador del Real Madrid previa al partido de LaLiga EA Sports ante el Getafe en el Santiago Bernabéu</p>
+                    
+                </div>
+                <div class="news-card" onclick="location.href='noticia4.html';">
+                    <img src="imagenes/trend.jpeg" alt="FÚTBOL">
+                    <h3>Liverpool y Real Madrid ya hablan por Alexander-Arnold</h3>
+                    <p>'TalkSport' afirma que el club blanco ya habría hecho saber al 'red' su intención de fichar al lateral</p>
+                    
+                </div>
+            </div>
+        </section>
+        <section id="galeria">
+            <h2>Galería de Fotos Icónicas</h2>
+            <div class="gallery">
+                <img src="imagenes/cris.jpg" alt="Cristiano Ronaldo" onclick="openModal(this.src, 'La Chilena de Cristiano Ronaldo contra Buffon: Un Gol para la Historia')">
+                <img src="imagenes/messi.jpg" alt="Messi" onclick="openModal(this.src, 'Una de las mejores actuaciones individuales en la final de la Champions League')">
+                <img src="imagenes/iniesta.jpg" alt="Iniesta" onclick="openModal(this.src, 'En el minuto 116, cuando el mundo contenía el aliento, Andrés Iniesta desató la eternidad con un derechazo inmortal que coronó a España como campeona del mundo por primera vez en su historia')">
+                <img src="imagenes/cris2.jpg" alt="Cristiano Ronaldo" onclick="openModal(this.src, 'Cristiano Ronaldo, el eterno comandante, con la camiseta de Portugal, demuestra que no solo lleva el número 7 en la espalda, sino el peso de una nación en el corazón, transformando cada partido en un legado de grandeza.')">
+                <img src="imagenes/cris3.jpg" alt="Cristiano Ronaldo" onclick="openModal(this.src, 'Con la camiseta del Manchester United y el fuego en la mirada, Cristiano Ronaldo rugía como un león en el Teatro de los Sueños, anunciando al mundo que una leyenda estaba naciendo bajo el manto del número 7.')">
+                <img src="imagenes/msn.jpeg" alt="MSN" onclick="openModal(this.src, 'El tridente mágico del Barcelona: Messi, Suárez y Neymar, una sinfonía de fútbol que deslumbró al mundo, escribiendo su legado con goles, asistencias y un arte único en cada jugada.')">
+                <img src="imagenes/messi2.jpeg" alt="Messi" onclick="openModal(this.src, 'El rey del fútbol alza la copa, coronando su leyenda en el trono más alto del mundo.')">
+                <img src="imagenes/maradona.jpg" alt="Maradona" onclick="openModal(this.src, 'La pelota no solo obedecía a sus pies, también parecía entender su corazón.')">
+                <img src="imagenes/bbc.jpg" alt="BBC" onclick="openModal(this.src, 'La icónica BBC (Bale, Benzema y Cristiano) fue sinónimo de éxito y gloria, llevando al Real Madrid a conquistar múltiples títulos, incluidos 4 trofeos de Champions League en una era dorada.')">
+                <img src="imagenes/pele.jpeg" alt="Pele" onclick="openModal(this.src, '¡El mundo se rinde ante la grandeza de un momento eterno en el fútbol!')">
+                <img src="imagenes/mesi.jpeg" alt="Messi" onclick="openModal(this.src, 'Silencio en el estadio, el genio ha dejado su firma inmortal.')">
+            </div>
+        </section>
+        <section id="ligas">
+    <h2>TOP 5 LIGAS</h2>
+    <div class="leagues-container">
+        <div class="league-card" onclick="location.href='premier.html';">
+            <img src="imagenes/premier.jpeg" alt="Premier League">
+            <h3>Premier League</h3>
+        </div>
+        <div class="league-card" onclick="location.href='laliga.html';">
+            <img src="imagenes/laliga.jpeg" alt="La Liga">
+            <h3>La Liga</h3>
+        </div>
+        <div class="league-card" onclick="location.href='seriea.html';">
+            <img src="imagenes/seriea.jpeg" alt="Serie A">
+            <h3>Serie A</h3>
+        </div>
+        <div class="league-card" onclick="location.href='bundesliga.html';">
+            <img src="imagenes/bundesliga.jpeg" alt="Bundesliga">
+            <h3>Bundesliga</h3>
+        </div>
+        <div class="league-card" onclick="location.href='ligue1.html';">
+            <img src="imagenes/ligue1.jpeg" alt="Ligue 1">
+            <h3>Ligue 1</h3>
+        </div>
+    </div>
+</section>
+
+        
+        <section id="contacto">
+    <h2>Contacto</h2>
+    <div class="contact-info">
+        <div class="contact-item">
+            <img src="imagenes/phone.png" alt="Icono de Teléfono" class="contact-icon">
+            <p><strong>Número telefónico:</strong> +51 912 416 056</p>
+        </div>
+        <div class="contact-item">
+            <img src="imagenes/correo.png" alt="Icono de Correo" class="contact-icon">
+            <p><strong>Correo electrónico:</strong> amant3sdelbalon@gmail.com</p>
+        </div>
+        <div class="contact-item">
+            <img src="imagenes/direccion.png" alt="Icono de Ubicación" class="contact-icon">
+            <p><strong>Dirección:</strong> VIA COLECTORA</p>
+        </div>
+    </div>
+
+    <h3>Envíanos un Mensaje</h3>
+    <form action="#" method="POST" class="contact-form">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Enviar</button>
+    </form>
+</section>
+    </div>
+    <footer>
+        <a href="https://www.facebook.com/profile.php?id=61569554979081" target="_blank">
+            <img src="imagenes/facebook-logo-1-2.png" alt="Facebook Logo"> AmantesDelBalón
+        </a>
+        <a href="https://www.instagram.com/amantesdelbalonxd/" target="_blank">
+            <img src="imagenes/instagram.png" alt="Instagram Logo"> AmantesDelBalón
+        </a>
+    </footer>
+ 
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <img id="modal-image" src="" alt="Imagen del Modal">
+            <div id="modal-info">
+                <h3>Descripción</h3>
+                <p id="modal-description"></p>
+            </div>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+    </div>
+
+    <script> 
+        document.getElementById('modal').style.display = 'none';
+
+        function openModal(imageSrc, description) { 
+            document.getElementById('modal-image').src = imageSrc;
+            document.getElementById('modal-description').textContent = description;
+ 
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() { 
+            document.getElementById('modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
